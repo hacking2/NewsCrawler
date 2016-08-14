@@ -12,7 +12,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import study.java.project1.html.AnchorTag;
 import study.java.project1.html.TagElement;
@@ -22,8 +22,10 @@ import study.java.project1.html.TagElement;
  * @author hyeon
  *
  */
+@Component
 public class ContentsListExtractor implements NewsCrawler<List<TagElement>> {
-  private int DEFAULT_TIMEOUT_MILLIS = 3000;
+  private static final int DEFAULT_TIMEOUT_MILLIS = 3000;
+  
   @Override
   public List<TagElement> parse(CrawlerContext ctx) throws MalformedURLException, IOException {
     String seedUrl = ctx.getParam(CrawlerContextProperty.SEED_URL);
