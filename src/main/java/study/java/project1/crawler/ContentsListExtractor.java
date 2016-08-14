@@ -24,7 +24,7 @@ import study.java.project1.html.TagElement;
  */
 @Component
 public class ContentsListExtractor implements NewsCrawler<List<TagElement>> {
-  private static final int DEFAULT_TIMEOUT_MILLIS = 3000;
+  public static final int DEFAULT_TIMEOUT_MILLIS = 3000;
   
   @Override
   public List<TagElement> parse(CrawlerContext ctx) throws MalformedURLException, IOException {

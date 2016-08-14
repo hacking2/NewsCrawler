@@ -3,6 +3,7 @@
  */
 package study.java.project1.crawler;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ public interface NewsCrawler<T> {
    *
    */
   public static class CrawlerContext {
-    private Map<String, Object> params;
+    private Map<String, Object> params = new HashMap<>();
     
     @SuppressWarnings("unchecked")
     public <T> T getParam(String key) {
