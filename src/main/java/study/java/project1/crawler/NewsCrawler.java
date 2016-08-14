@@ -11,7 +11,7 @@ import java.util.Map;
  *
  */
 public interface NewsCrawler<T> {
-  T parse(CrawlerContext context);
+  T parse(CrawlerContext context) throws Exception;
   
   /**
    * Crawler에 필요한 파라미터 전달용 Parameter

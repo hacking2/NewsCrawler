@@ -3,8 +3,18 @@
  */
 package study.java.project1.crawler;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import study.java.project1.html.AnchorTag;
 import study.java.project1.html.TagElement;
 
 /**
@@ -13,11 +23,17 @@ import study.java.project1.html.TagElement;
  *
  */
 public class ContentsListExtractor implements NewsCrawler<List<TagElement>> {
-
+  private int DEFAULT_TIMEOUT_MILLIS = 3000;
   @Override
-  public List<TagElement> parse(CrawlerContext ctx) {
-    // TODO Auto-generated method stub
-    return null;
+  public List<TagElement> parse(CrawlerContext ctx) throws MalformedURLException, IOException {
+    String seedUrl = ctx.getParam(CrawlerContextProperty.SEED_URL);
+    Document doc = Jsoup.parse(new URL(seedUrl), DEFAULT_TIMEOUT_MILLIS);
+    String listSelector = ctx.getParam(ContentsListProperty.CONTENT_LIST_SELECTOR);
+    List<TagElement> elements = new ArrayList<>();
+    for (Element e : doc.select(listSelector)) {
+      elements.add(new AnchorTag(e));
+    }
+    return elements;
   }
   
   public static interface ContentsListProperty {
