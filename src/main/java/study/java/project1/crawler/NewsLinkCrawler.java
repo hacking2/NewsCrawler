@@ -16,8 +16,8 @@ public class NewsLinkCrawler implements NewsCrawler<List<TagElement>> {
 
   @Override
   public List<TagElement> parse(CrawlerContext context) throws Exception {
-    CrawlRecipe recipe = context.getParam("recipe");
-    String seedUrl = context.getParam("seed");
+    CrawlRecipe recipe = context.getParam(CrawlerContextProperty.RECIPE);
+    String seedUrl = context.getParam(CrawlerContextProperty.SEED_URL);
     Document doc = Jsoup.parse(new URL(seedUrl), 3000);
     Elements elements = doc.select(recipe.getNewsLinkSelector());
     List<TagElement> links = new ArrayList<>();

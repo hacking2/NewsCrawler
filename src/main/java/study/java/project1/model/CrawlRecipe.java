@@ -26,9 +26,18 @@ public class CrawlRecipe {
   private String newsLinkSelector;
   private String titleSelector;
   private String contentSelector;
+  private String idSelector;
   private IdSpot idSpot;
   private boolean removeImg;
   
+  public String getIdSelector() {
+    return idSelector;
+  }
+
+  public void setIdSelector(String idSelector) {
+    this.idSelector = idSelector;
+  }
+
   public String getNewsLinkSelector() {
     return newsLinkSelector;
   }
