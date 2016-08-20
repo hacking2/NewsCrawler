@@ -12,6 +12,8 @@ import java.util.Map;
  *
  */
 public interface NewsCrawler<T> {
+  public static final int DEFAULT_TIMEOUT_MILLIS = 3000;
+  
   T parse(CrawlerContext context) throws Exception;
   
   /**
@@ -35,6 +37,5 @@ public interface NewsCrawler<T> {
   
   public static interface CrawlerContextProperty {
     public static final String SEED_URL = "seedUrl";
-    public static final String SELECTOR = "selector";
   }
 }
