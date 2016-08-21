@@ -11,7 +11,11 @@ import org.jsoup.select.Elements;
 import study.java.project1.html.AnchorTag;
 import study.java.project1.html.TagElement;
 import study.java.project1.model.CrawlRecipe;
-
+/**
+ * 이 크롤러는 헤드라인만 있는 페이지에서 실제 뉴스 내용이 담겨진 페이지로의 링크를 뽑아온다.
+ * @author hyeon
+ *
+ */
 public class NewsLinkCrawler implements NewsCrawler<List<TagElement>> {
   public static final int DEFAULT_TIMEOUT_MILLIS = 3000;
   
