@@ -6,8 +6,6 @@ package study.java.project1.crawler;
 import java.util.HashMap;
 import java.util.Map;
 
-import study.java.project1.model.CrawlRecipe;
-
 /**
  * 특정페이지에서 특정 태그를 파싱하는 크롤러 추상화
  * @author hyeon

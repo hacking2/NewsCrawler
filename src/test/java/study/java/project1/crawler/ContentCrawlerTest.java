@@ -25,11 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import study.java.project1.byproduct.RawNews;
 import study.java.project1.crawler.NewsCrawler.CrawlerContext;
 import study.java.project1.crawler.NewsCrawler.CrawlerContextProperty;
 import study.java.project1.model.CrawlRecipe;
 import study.java.project1.model.News;
 import study.java.project1.model.CrawlRecipe.IdSpot;
+import study.java.project1.model.CrawlRecipe.ValueType;
 
 /**
  * @author hyeon
@@ -42,7 +44,7 @@ import study.java.project1.model.CrawlRecipe.IdSpot;
 public class ContentCrawlerTest {
 
   @Autowired
-  private NewsCrawler<News> newsContentCrawler;
+  private NewsCrawler<RawNews> newsContentCrawler;
   
   @Test
   public void ID가_URL에_있을때_기사제목_내용_ID_잘_긁어오는지_테스트() throws Exception {
@@ -62,11 +64,11 @@ public class ContentCrawlerTest {
     mockStatic(Jsoup.class);
     when(Jsoup.parse(any(URL.class), any(Integer.class))).thenReturn(mockPage);
     
-    News crawledNews = newsContentCrawler.parse(mockCtx);
+    RawNews crawledNews = newsContentCrawler.parse(mockCtx);
     verifyStatic();
     assertEquals("id12345", crawledNews.getId());
-    assertEquals("This is content", crawledNews.getContent());
-    assertEquals("This is Title", crawledNews.getTitle());
+    assertEquals("This is content", crawledNews.getRawContent());
+    assertEquals("This is Title", crawledNews.getRawTitle());
   }
   
   @Test
@@ -74,11 +76,13 @@ public class ContentCrawlerTest {
     Document mockPage = Jsoup.parse(new File(getResourceUrl().toURI()), "utf-8");
     String mockUrl = "http://myapp.mock.url/mycontent"; //맨 오른쪽이 기사 ID
 
+    //id가 value에 심어져있을 때
     CrawlRecipe mockRecipe = mock(CrawlRecipe.class);
     when(mockRecipe.getIdSpot()).thenReturn(IdSpot.DOCUMENT);
-    when(mockRecipe.getIdSelector()).thenReturn("div.meta_area input:hidden#news_id"); //id다음으로 숫자가 나온는 끝부분을 추출
+    when(mockRecipe.getIdSelector()).thenReturn("div.meta_area input#news_id_hidden"); //id다음으로 숫자가 나온는 끝부분을 추출
     when(mockRecipe.getTitleSelector()).thenReturn("div.title_area p span");
     when(mockRecipe.getContentSelector()).thenReturn("div div.content span.content_area");
+    when(mockRecipe.getIdValueType()).thenReturn(ValueType.VALUE);
 
     CrawlerContext mockCtx = mock(CrawlerContext.class);
     when(mockCtx.getParam(CrawlerContextProperty.SEED_URL)).thenReturn(mockUrl);
@@ -87,11 +91,33 @@ public class ContentCrawlerTest {
     mockStatic(Jsoup.class);
     when(Jsoup.parse(any(URL.class), any(Integer.class))).thenReturn(mockPage);
     
-    News crawledNews = newsContentCrawler.parse(mockCtx);
-    verifyStatic();
-    assertEquals("id12345", crawledNews.getId());
-    assertEquals("This is content", crawledNews.getContent());
-    assertEquals("This is Title", crawledNews.getTitle());
+    RawNews crawledNews = newsContentCrawler.parse(mockCtx);
+    //valuetype이 attr=value일 때 테스트
+    assertEquals("hidden12345", crawledNews.getId());
+    assertEquals("This is content", crawledNews.getRawContent());
+    assertEquals("This is Title", crawledNews.getRawTitle());
+    
+    //valuetype이 text일 때 테스트
+    when(mockRecipe.getIdSelector()).thenReturn("div.meta_area div#news_id_span span");
+    when(mockRecipe.getTitleSelector()).thenReturn("div.title_area p span");
+    when(mockRecipe.getContentSelector()).thenReturn("div div.content span.content_area");
+    when(mockRecipe.getIdValueType()).thenReturn(ValueType.TEXT);
+    
+    crawledNews = newsContentCrawler.parse(mockCtx);
+    assertEquals("span12345", crawledNews.getId());
+    assertEquals("This is content", crawledNews.getRawContent());
+    assertEquals("This is Title", crawledNews.getRawTitle());
+    
+    //valuetype이 html일 때 테스트
+    when(mockRecipe.getIdSelector()).thenReturn("div.meta_area div#news_id_html");
+    when(mockRecipe.getTitleSelector()).thenReturn("div.title_area p span");
+    when(mockRecipe.getContentSelector()).thenReturn("div div.content span.content_area");
+    when(mockRecipe.getIdValueType()).thenReturn(ValueType.HTML);
+    
+    crawledNews = newsContentCrawler.parse(mockCtx);
+    assertEquals("<div>12345</div>", crawledNews.getId().replaceAll("\\s", ""));//공백무시비교
+    assertEquals("This is content", crawledNews.getRawContent());
+    assertEquals("This is Title", crawledNews.getRawTitle());
   }
   
   private URL getResourceUrl() {

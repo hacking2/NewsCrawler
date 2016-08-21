@@ -6,18 +6,19 @@ import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 
+import study.java.project1.byproduct.RawNews;
 import study.java.project1.model.CrawlRecipe;
 import study.java.project1.model.CrawlRecipe.IdSpot;
-import study.java.project1.model.News;
 
-public class NewsContentCrawler implements NewsCrawler<News> {
+public class NewsContentCrawler implements NewsCrawler<RawNews> {
   @Override
-  public News parse(CrawlerContext context) throws Exception {
+  public RawNews parse(CrawlerContext context) throws Exception {
     String url = context.getParam(CrawlerContextProperty.SEED_URL);
     CrawlRecipe recipe = context.getParam(CrawlerContextProperty.RECIPE);
-    Document doc = Jsoup.parse(new URL(url), 3000);
-    News news = new News();
+    Document doc = Jsoup.parse(new URL(url), NewsCrawler.DEFAULT_TIMEOUT_MILLIS);
+    RawNews news = new RawNews();
     if (recipe.getIdSpot() == IdSpot.URL) {
       Matcher matcher = Pattern.compile(recipe.getIdSelector()).matcher(url);
       if (matcher.groupCount() > 1) {
@@ -29,10 +30,25 @@ public class NewsContentCrawler implements NewsCrawler<News> {
         throw new Exception("No such news ID in url");
       }
     } else {
-      news.setId(doc.select(recipe.getIdSelector()).text());
+      Elements idElement = doc.select(recipe.getIdSelector());
+      String id = null;
+      switch (recipe.getIdValueType()) {
+        case VALUE :
+          id = idElement.val();
+          break;
+        case TEXT :
+          id = idElement.text();
+          break;
+        case HTML :
+          id = idElement.html();
+          break;
+        default : 
+          throw new IllegalArgumentException("Only Value, Text, Html!");
+      }
+      news.setId(id);
     }
-    news.setTitle(doc.select(recipe.getTitleSelector()).text());
-    news.setContent(doc.select(recipe.getContentSelector()).text());
+    news.setRawTitle(doc.select(recipe.getTitleSelector()).html());
+    news.setRawContent(doc.select(recipe.getContentSelector()).html());
     return news;
   }
 }
