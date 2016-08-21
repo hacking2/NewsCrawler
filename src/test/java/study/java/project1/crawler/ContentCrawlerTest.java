@@ -34,6 +34,8 @@ import study.java.project1.model.CrawlRecipe.IdSpot;
 import study.java.project1.model.CrawlRecipe.ValueType;
 
 /**
+ * html 파싱 함수가 static이므로 불가피하게 static function을 mocking할 수 있는 PowerMock 라이브러리를 사용함
+ * 이 테스트 파일에서는 NewsContentCrawler.class를 테스트한다.
  * @author hyeon
  *
  */
@@ -46,6 +48,11 @@ public class ContentCrawlerTest {
   @Autowired
   private NewsCrawler<RawNews> newsContentCrawler;
   
+  /**
+   * 이 테스트에서는 기사 id가 기사 url에 심어져 있는 경우를 테스트한다. 
+   * 뉴스 페이지는 classpath:/mock_news_content.html을 사용한다.
+   * @throws Exception
+   */
   @Test
   public void ID가_URL에_있을때_기사제목_내용_ID_잘_긁어오는지_테스트() throws Exception {
     Document mockPage = Jsoup.parse(new File(getResourceUrl().toURI()), "utf-8");
@@ -71,6 +78,12 @@ public class ContentCrawlerTest {
     assertEquals("This is Title", crawledNews.getRawTitle());
   }
   
+  /**
+   * 기사 id가 url에 포함되어 있지 않은 경우 document 어딘가에 있을 것으로 예상되기에
+   * document에서 id를 뽑아오는지 테스트한다.
+   * 뉴스 페이지는 classpath:/mock_news_content.html을 사용한다.
+   * @throws Exception
+   */
   @Test
   public void ID가_Document에_있을때_기사제목_내용_ID_잘_긁어오는지_테스트() throws Exception {
     Document mockPage = Jsoup.parse(new File(getResourceUrl().toURI()), "utf-8");
@@ -79,7 +92,7 @@ public class ContentCrawlerTest {
     //id가 value에 심어져있을 때
     CrawlRecipe mockRecipe = mock(CrawlRecipe.class);
     when(mockRecipe.getIdSpot()).thenReturn(IdSpot.DOCUMENT);
-    when(mockRecipe.getIdSelector()).thenReturn("div.meta_area input#news_id_hidden"); //id다음으로 숫자가 나온는 끝부분을 추출
+    when(mockRecipe.getIdSelector()).thenReturn("div.meta_area input#news_id_hidden");
     when(mockRecipe.getTitleSelector()).thenReturn("div.title_area p span");
     when(mockRecipe.getContentSelector()).thenReturn("div div.content span.content_area");
     when(mockRecipe.getIdValueType()).thenReturn(ValueType.VALUE);
