@@ -3,18 +3,21 @@
  */
 package study.java.project1.html;
 
-import java.util.Map;
+import org.jsoup.nodes.Element;
 
 /**
  * @author hyeon
  *
  */
 public class AnchorTag implements TagElement {
-  private Map<String, String> attr;
+  private Element element;
   
+  public AnchorTag(Element elem) {
+    this.element = elem;
+  }
   @Override
   public String getAttribute(String key) {
-    return attr.get(key);
+    return element.attr(key);
   }
 
 }

@@ -3,6 +3,7 @@
  */
 package study.java.project1.crawler;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,17 @@ public class NewsExtractorChain implements NewsCrawler<List<News>> {
   private NewsCrawler<News> contentsExtractor;
   
   @Override
-  public List<News> parse(CrawlerContext ctx) {
-    return null;
+  public List<News> parse(CrawlerContext ctx) throws Exception {
+    List<News> news = new ArrayList<>();
+    List<TagElement> links = contentsListExtractor.parse(ctx);
+    links.forEach(linkElement -> {
+      ctx.putParam(CrawlerContextProperty.SEED_URL, linkElement.getAttribute("abs:href"));
+      try {
+        news.add(contentsExtractor.parse(ctx));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+    return news;
   }
-
 }

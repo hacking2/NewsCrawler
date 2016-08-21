@@ -3,7 +3,10 @@
  */
 package study.java.project1.crawler;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import study.java.project1.model.CrawlRecipe;
 
 /**
  * 특정페이지에서 특정 태그를 파싱하는 크롤러 추상화
@@ -11,7 +14,9 @@ import java.util.Map;
  *
  */
 public interface NewsCrawler<T> {
-  T parse(CrawlerContext context);
+  public static final int DEFAULT_TIMEOUT_MILLIS = 3000;
+  
+  T parse(CrawlerContext context) throws Exception;
   
   /**
    * Crawler에 필요한 파라미터 전달용 Parameter
@@ -19,7 +24,7 @@ public interface NewsCrawler<T> {
    *
    */
   public static class CrawlerContext {
-    private Map<String, Object> params;
+    private Map<String, Object> params = new HashMap<>();
     
     @SuppressWarnings("unchecked")
     public <T> T getParam(String key) {
@@ -34,6 +39,6 @@ public interface NewsCrawler<T> {
   
   public static interface CrawlerContextProperty {
     public static final String SEED_URL = "seedUrl";
-    public static final String SELECTOR = "selector";
+    public static final String RECIPE = "recipe";
   }
 }
