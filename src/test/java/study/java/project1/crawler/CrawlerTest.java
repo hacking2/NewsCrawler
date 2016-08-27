@@ -48,12 +48,12 @@ public class CrawlerTest {
 
 	@Test
 	public void 게시판형_뉴스페이지의_seed에서_뉴스목록_뽑아오기() throws Exception {
+	  final String mockUrlStr = "http://news.mock.myapp";
 	  CrawlRecipe mockRecipe = mock(CrawlRecipe.class);
+	  when(mockRecipe.getSeedUrl()).thenReturn(mockUrlStr);
     when(mockRecipe.getNewsLinkSelector()).thenReturn("ul li.edit a");
-    final String mockUrlStr = "http://news.mock.myapp";
     
     CrawlerContext mockContext = mock(CrawlerContext.class);
-    when(mockContext.getParam(CrawlerContextProperty.SEED_URL)).thenReturn(mockUrlStr);
     when(mockContext.getParam(CrawlerContextProperty.RECIPE)).thenReturn(mockRecipe);
 
     //parsing result mock
