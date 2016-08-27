@@ -15,7 +15,16 @@ public class CrawlRecipe {
   private String idSelector;
   private IdSpot idSpot;
   private ValueType idValueType;
+  private String seedUrl;
   
+  public String getSeedUrl() {
+    return seedUrl;
+  }
+
+  public void setSeedUrl(String seedUrl) {
+    this.seedUrl = seedUrl;
+  }
+
   public ValueType getIdValueType() {
     return idValueType;
   }
