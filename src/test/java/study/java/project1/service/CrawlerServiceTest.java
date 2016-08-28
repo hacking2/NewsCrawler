@@ -21,6 +21,7 @@ import study.java.project1.byproduct.RawNews;
 import study.java.project1.crawler.NewsCrawler;
 import study.java.project1.crawler.NewsCrawler.CrawlerContext;
 import study.java.project1.dao.CrawlRecipeDao;
+import study.java.project1.dao.NewsDao;
 import study.java.project1.model.CrawlRecipe;
 
 /**
@@ -38,16 +39,19 @@ public class CrawlerServiceTest {
   @MockBean
   private CrawlRecipeDao recipeDao;
   
+  @MockBean
+  private NewsDao newsDao;
+  
   @SuppressWarnings("unchecked")
   @Test
   public void 크롤서비스_내에서_crawler_호출_후_db_인서트가_수행되어야_함() throws Exception {
     when(recipeDao.findAll()).thenReturn(Arrays.asList(mock(CrawlRecipe.class))); //list를 최소 한 번 돌게 하기 위해서 mock list를 리턴하게 함
  
     service.execute();
-    InOrder methodCallOrder = inOrder(crawler, recipeDao);
+    InOrder methodCallOrder = inOrder(crawler, recipeDao, newsDao);
     methodCallOrder.verify(recipeDao).findAll();
     methodCallOrder.verify(crawler).parse(any(CrawlerContext.class));
-    methodCallOrder.verify(recipeDao).insert(any(Collection.class));
+    methodCallOrder.verify(newsDao).save(any(Collection.class));
   }
   
   @Configuration
