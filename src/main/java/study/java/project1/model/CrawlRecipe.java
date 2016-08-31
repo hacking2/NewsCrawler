@@ -3,18 +3,50 @@
  */
 package study.java.project1.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  * @author hyeon
  */
+@Entity(name = "crawl_recipe")
 public class CrawlRecipe {
+  @ManyToOne
+  @JoinColumn(name = "company_id")
   private Company company;
+  
+  @Id
+  @GeneratedValue
+  @Column(name = "recipe_id")
   private Integer recipeId;
+  
+  @Column(name = "news_link_selector")
   private String newsLinkSelector;
+  
+  @Column(name = "title_selector")
   private String titleSelector;
+  
+  @Column(name = "content_selector")
   private String contentSelector;
+  
+  @Column(name = "id_selector")
   private String idSelector;
+  
+  @Enumerated(EnumType.STRING)
+  @Column(name = "id_spot")
   private IdSpot idSpot;
+  
+  @Enumerated(EnumType.STRING)
+  @Column(name = "id_value_type")
   private ValueType idValueType;
+  
+  @Column(name = "seed_url")
   private String seedUrl;
   
   public String getSeedUrl() {

@@ -3,26 +3,45 @@
  */
 package study.java.project1.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 /**
  * News db의 도메인 객체
  * @author hyeon
  *
  */
+@Entity(name = "news")
 public class News {
-	private String company;
-	private String id;
+  @Id
+  @GeneratedValue
+  @Column
+	private int id;
+  
+  @ManyToOne
+  @JoinColumn(name = "company_id")
+	private Company company;
+  
+  @Column
 	private String title;
+  
+  @Column
 	private String content;
-	public String getCompany() {
+  
+	public Company getCompany() {
 		return company;
 	}
-	public void setCompany(String company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
-	public String getId() {
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	public String getTitle() {

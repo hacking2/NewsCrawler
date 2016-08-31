@@ -11,7 +11,7 @@ import study.java.project1.byproduct.RawNews;
 import study.java.project1.crawler.NewsCrawler;
 import study.java.project1.crawler.NewsCrawler.CrawlerContext;
 import study.java.project1.dao.CrawlRecipeDao;
-import study.java.project1.model.CrawlRecipe;
+import study.java.project1.dao.NewsDao;
 
 /**
  * @author hyeon
@@ -24,15 +24,18 @@ public class CrawlService {
   @Autowired
   private CrawlRecipeDao crawlRecipeDao;
   
+  @Autowired
+  private NewsDao newsDao;
+  
   public void execute() {
-    List<CrawlRecipe> recipes = crawlRecipeDao.findAll();
     CrawlerContext context = new CrawlerContext();
-    recipes.forEach(recipe -> {
+    crawlRecipeDao.findAll().forEach(recipe -> {
       context.putParam(NewsCrawler.CrawlerContextProperty.RECIPE, recipe);
       try {
         List<RawNews> crawledNews = crawler.parse(context);
         //TODO normalizer 거치고 insert 되야 함, 테스트에 verify 추가해야 함
-        crawlRecipeDao.insert(crawledNews);
+        
+//        newsDao.save(crawledNews);
       } catch (Exception e) {
         //TODO report mail
       }
