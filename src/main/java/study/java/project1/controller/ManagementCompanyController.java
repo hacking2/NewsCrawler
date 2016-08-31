@@ -15,23 +15,24 @@ import study.java.project1.model.Company;
  *
  */
 @Controller
+@RequestMapping("/company")
 public class ManagementCompanyController {
-  @RequestMapping(name = "/company", method = RequestMethod.GET)
+  @RequestMapping(name = "", method = RequestMethod.GET)
   public String managementCompany() {
     return "company";
   }
   
-  @RequestMapping(name = "/company", method = RequestMethod.POST)
+  @RequestMapping(name = "", method = RequestMethod.POST)
   public @ResponseBody Company newCompany(Company company) {
     return null;
   }
   
-  @RequestMapping(name = "/company", method = RequestMethod.PUT)
+  @RequestMapping(name = "", method = RequestMethod.PUT)
   public @ResponseBody Company updateCompany(Company company) {
     return null;
   }
   
-  @RequestMapping(name = "/company", method = RequestMethod.DELETE)
+  @RequestMapping(name = "", method = RequestMethod.DELETE)
   public @ResponseBody boolean removeCompany(Company company) {
     return false;
   }
