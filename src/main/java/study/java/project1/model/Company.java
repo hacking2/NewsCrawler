@@ -4,21 +4,34 @@
 package study.java.project1.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 /**
  * @author hyeon
  *
  */
-@Table(name = "company")
+@Entity(name = "company")
 public class Company {
   @Id
+  @GeneratedValue
   @Column
   private int id;
   
   @Column
   private String name;
+
+  @Column
+  private String description;
+  
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
   public int getId() {
     return id;

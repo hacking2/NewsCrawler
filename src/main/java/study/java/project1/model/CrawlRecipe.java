@@ -4,23 +4,25 @@
 package study.java.project1.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * @author hyeon
  */
-@Table(name = "crawl_recipe")
+@Entity(name = "crawl_recipe")
 public class CrawlRecipe {
   @ManyToOne
   @JoinColumn(name = "company_id")
   private Company company;
   
   @Id
+  @GeneratedValue
   @Column(name = "recipe_id")
   private Integer recipeId;
   

@@ -34,7 +34,8 @@ public class CrawlService {
       try {
         List<RawNews> crawledNews = crawler.parse(context);
         //TODO normalizer 거치고 insert 되야 함, 테스트에 verify 추가해야 함
-        newsDao.save(crawledNews);
+        
+//        newsDao.save(crawledNews);
       } catch (Exception e) {
         //TODO report mail
       }
