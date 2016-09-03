@@ -9,6 +9,6 @@
   </script>
 </head>
 <body>
-  <span id="text"></span>
+  <span id="text">${version}</span>
 </body>
 </html>
