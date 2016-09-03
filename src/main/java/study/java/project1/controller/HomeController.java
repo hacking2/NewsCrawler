@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class HomeController {
   @RequestMapping("/version")
-  public @ResponseBody String getVersion() {
-    return "1.0.0.BUILD-SNAPSHOT";
+  public String getVersion() {
+    return "home";
   }
   
 }
