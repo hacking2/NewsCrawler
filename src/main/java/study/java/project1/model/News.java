@@ -3,12 +3,15 @@
  */
 package study.java.project1.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * News db의 도메인 객체
@@ -31,6 +34,10 @@ public class News {
   
   @Column
 	private String content;
+  
+  @OneToMany
+  @JoinColumn(name = "news_image")
+  private List<NewsImage> newsImages;
   
 	public Company getCompany() {
 		return company;
