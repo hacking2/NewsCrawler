@@ -10,5 +10,6 @@
 </head>
 <body>
   <span id="text">${version}</span>
+  <span id="text">${buildTime}</span>
 </body>
 </html>
