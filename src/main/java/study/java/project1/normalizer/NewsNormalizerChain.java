@@ -3,6 +3,9 @@
  */
 package study.java.project1.normalizer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +18,7 @@ import study.java.project1.model.NormalizeRecipe;
  *
  */
 @Component
-public class NewsNormalizerChain implements NewsNormalizer<RawNews, News> {
+public class NewsNormalizerChain implements NewsNormalizer<List<RawNews>, List<News>> {
   @Autowired
   private ImageSeperator imageSeperator;
   
@@ -23,7 +26,11 @@ public class NewsNormalizerChain implements NewsNormalizer<RawNews, News> {
   private TagRemover tagRemover;
   
   @Override
-  public News normalize(NormalizeRecipe recipe, RawNews input) {
-    return tagRemover.normalize(recipe, imageSeperator.normalize(recipe, input));
+  public List<News> normalize(NormalizeRecipe recipe, List<RawNews> input) {
+    List<News> newsList = new ArrayList<>();
+    for (RawNews rawNews : input) {
+      newsList.add(tagRemover.normalize(recipe, imageSeperator.normalize(recipe, rawNews)));
+    }
+    return newsList;
   }
 }

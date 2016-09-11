@@ -12,6 +12,8 @@ import study.java.project1.crawler.NewsCrawler;
 import study.java.project1.crawler.NewsCrawler.CrawlerContext;
 import study.java.project1.dao.CrawlRecipeDao;
 import study.java.project1.dao.NewsDao;
+import study.java.project1.model.News;
+import study.java.project1.normalizer.NewsNormalizer;
 
 /**
  * @author hyeon
@@ -27,15 +29,17 @@ public class CrawlService {
   @Autowired
   private NewsDao newsDao;
   
+  @Autowired
+  private NewsNormalizer<List<RawNews>, List<News>> normalizer;
+  
   public void execute() {
     CrawlerContext context = new CrawlerContext();
     crawlRecipeDao.findAll().forEach(recipe -> {
       context.putParam(NewsCrawler.CrawlerContextProperty.RECIPE, recipe);
       try {
         List<RawNews> crawledNews = crawler.parse(context);
-        //TODO normalizer 거치고 insert 되야 함, 테스트에 verify 추가해야 함
-        
-//        newsDao.save(crawledNews);
+        List<News> refinedNews = normalizer.normalize(null, crawledNews); //TODO: normalized Recipe는 어떻게?
+        newsDao.save(refinedNews);
       } catch (Exception e) {
         //TODO report mail
       }
