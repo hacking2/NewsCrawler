@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,6 +15,7 @@
     $( document ).ready( function() {
     	$('#newCompanySubmit').submit(function() {
     		var invalid = [];
+    		var $modalForm = $('#newCompanySubmit');
     		$.each($(this).children('.modal-body').children('input'), function(idx, dom) {
     			var $dom = $(dom);
     			if (!$dom.val()) {
@@ -22,11 +23,43 @@
     			}
     		});
     		if (invalid.length) {
-    			alert(invalid.join(', ') + '를 입력해주세요!');
+    			alert(invalid.join(', ') + '입력해주세요!');
     			return false;
     		} else {
+    			$modalForm.attr('action', '${rc.getContextPath()}/new');
     			return true;
     		}
+    	});
+    	
+    	$('.btn_modifier').click(function() {
+    		var companyId = $(this).data('company_id');
+    		var $valueElement = $('#element_' + companyId);
+    		var img = $valueElement.children('img')[0];
+    		var name = $valueElement.children('span#element_name_' + companyId);
+    		var description = $valueElement.children('span#element_description_' + companyId);
+    		var $hiddenId = $('#modal_company_id');
+    		var $modalForm = $('#newCompanySubmit');
+    		if (!$hiddenId.length) {
+    			$hiddenId = $('<input type="hidden" id="modal_company_id" val="' + companyId + '">');
+    			$('#modal_body').append($hiddenId);
+    		}
+    		$hiddenId.val(companyId);
+    		$('#modal_company_name').val(name.innerHTML);
+    		$('#modal_company_image').val(img.alt !== 'no_image' ? img.src : null);
+    		$('#modal_company_description').val(description.innerHTML);
+    		
+    		$modalForm.attr('action', '${rc.getContextPath()}/modification');
+    	});
+    	
+    	$('.btn_remover').click(function() {
+    		$(this).parent('form').submit();
+    	});
+    	
+    	$('.modal_close').click(function() {
+    		$('#modal_company_name').val('');
+        $('#modal_company_image').val('');
+        $('#modal_company_description').val('');
+        $('#modal_company_id').remove();
     	});
     }) 
   </script>
@@ -78,11 +111,27 @@
         <div class="row">
         </#if>
             <div class="col-md-3 portfolio-item">
-                <a href="${rc.getContextPath()}/recipe/${company.id}">
-                    <img class="img-responsive" src="<#if company.image??>${company.image}<#else>none</#if>" alt="">
-                    <span>${company.name}</span>
-                    <span>${company.description}</span>
+              <div class="element-control-area">
+                <a data-company_id="${company.id}" class="btn_modifier" href="#" data-toggle="modal" data-target="#myModal">수정</a>
+                <form action="${rc.getContextPath()}/company/removal" method="post">
+                  <a class="btn_remover" href="#">삭제</a>
+                  <input type="hidden" value="${company.id}" name="companyId">
+                </form>
+              </div>
+              <div class="element-data-area">
+                <#if company.image??>
+                  <#assign img = company.image>
+                  <#assign img_description = company.name>
+                <#else>
+                  <#assign img = rc.getContextPath() + "/image/default.jpg">
+                  <#assign img_description = "no_image">
+                </#if>
+                <a id="element_${company.id}" href="${rc.getContextPath()}/recipe/${company.id}">
+                    <img class="img-responsive" src="${img}" alt="${img_description}">
+                    <span id="element_name_${company.id}">${company.name}</span>
+                    <span class="element_description_${company.id}">${company.description}</span>
                 </a>
+              </div>
             </div>
         <#if company?index % 4 == 3 || company?is_last>
         </div>
@@ -97,21 +146,21 @@
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h4 class="modal-title">새 뉴스 제공사</h4>
+			        <h4 class="modal-title">뉴스제공사</h4>
 			      </div>
 			      <form id="newCompanySubmit" enctype="application/json" action="${rc.getContextPath()}/company/new" method="post">
-				      <div class="modal-body">
+				      <div id="modal_body" class="modal-body">
 				        
-				          <label for="name">Name:</label>
-	                <input type="text" class="form-control" id="name" name="name">
-	                <label for="description">Description:</label>
-	                <input type="text" class="form-control" id="description" name="description">
-	                <label for="image">Image URL:</label>
-	                <input type="url" class="form-control" id="image" name="image">
+				          <label for="modal_company_name">Name:</label>
+	                <input type="text" class="form-control" id="modal_company_name" name="name">
+	                <label for="modal_company_description">Description:</label>
+	                <input type="text" class="form-control" id="modal_company_description" name="description">
+	                <label for="modal_company_image">Image URL:</label>
+	                <input type="url" class="form-control" id="modal_company_image" name="image">
 				      </div>
 				      <div class="modal-footer">
 				        <input type="submit" class="btn btn-success" value="Submit">
-				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        <button type="button" class="btn btn-default modal_close" data-dismiss="modal">Close</button>
 				      </div>
 			      </form>
 			    </div>

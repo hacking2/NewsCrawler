@@ -5,6 +5,7 @@ package study.java.project1.model;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 /**
  * @author hyeon
@@ -33,8 +35,8 @@ public class Company {
   @Column
   private String image;
   
-  @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id")
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+  @JoinColumn(name = "company_id")
   private Collection<CrawlRecipe> recipes;
   
   public String getDescription() {

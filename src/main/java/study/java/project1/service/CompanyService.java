@@ -31,4 +31,8 @@ public class CompanyService {
   public void addAllCompany(Iterable<Company> companies) {
     companyDao.save(companies);
   }
+  
+  public void deleteCompany(Integer companyId) {
+    companyDao.delete(companyId);
+  }
 }

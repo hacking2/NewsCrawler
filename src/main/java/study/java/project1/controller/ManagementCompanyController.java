@@ -45,13 +45,16 @@ public class ManagementCompanyController {
     return "company";
   }
   
-//  @RequestMapping(name = "", method = RequestMethod.PUT)
-//  public @ResponseBody Company updateCompany(Company company) {
-//    return null;
-//  }
-//  
-//  @RequestMapping(name = "", method = RequestMethod.DELETE)
-//  public @ResponseBody boolean removeCompany(Company company) {
-//    return false;
-//  }
+  @RequestMapping(path = "/modification", method = RequestMethod.POST)
+  public String updateCompany(Company company) {
+    System.out.println("modify");
+    return "company";
+  }
+  
+  @RequestMapping(path = "/removal", method = RequestMethod.POST)
+  public String removeCompany(int companyId, ModelMap model) {
+    companyService.deleteCompany(companyId);
+    managementCompany(model);
+    return "company";
+  }
 }
