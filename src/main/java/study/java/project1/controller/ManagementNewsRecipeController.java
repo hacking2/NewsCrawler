@@ -15,7 +15,7 @@ import study.java.project1.model.CrawlRecipe;
  *
  */
 @Controller
-@RequestMapping("newsrecipe")
+@RequestMapping("/newsrecipe")
 public class ManagementNewsRecipeController {
   @RequestMapping(name = "", method = RequestMethod.GET)
   public String managementRecipe() {

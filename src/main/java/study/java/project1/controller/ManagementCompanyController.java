@@ -3,37 +3,49 @@
  */
 package study.java.project1.controller;
 
+import java.util.Collection;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import study.java.project1.model.Company;
+import study.java.project1.service.CompanyService;
 
 /**
  * @author hyeon
  *
  */
 @Controller
-@RequestMapping("/company")
+@RequestMapping(path = "/company")
 public class ManagementCompanyController {
-  @RequestMapping(name = "", method = RequestMethod.GET)
-  public String managementCompany() {
+  @Autowired
+  private CompanyService companyService;
+  
+  @RequestMapping(path = "/list", method = RequestMethod.GET)
+  public String managementCompany(ModelMap model) {
+    model.addAttribute("companies", companyService.allCompanies());
     return "company";
   }
   
-  @RequestMapping(name = "", method = RequestMethod.POST)
-  public @ResponseBody Company newCompany(Company company) {
-    return null;
+  @RequestMapping(path = "/new", method = RequestMethod.POST)
+  public String newCompany(Company company, ModelMap model) {
+    companyService.addCompany(company);
+    return "redirect:/company/list";
   }
   
-  @RequestMapping(name = "", method = RequestMethod.PUT)
-  public @ResponseBody Company updateCompany(Company company) {
-    return null;
+  @RequestMapping(path = "/modification", method = RequestMethod.POST)
+  public String updateCompany(Company company) {
+    companyService.modify(company);
+    return "redirect:/company/list";
   }
   
-  @RequestMapping(name = "", method = RequestMethod.DELETE)
-  public @ResponseBody boolean removeCompany(Company company) {
-    return false;
+  @RequestMapping(path = "/removal", method = RequestMethod.POST)
+  public String removeCompany(int companyId, ModelMap model) {
+    companyService.deleteCompany(companyId);
+    return "redirect:/company/list";
   }
 }
