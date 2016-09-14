@@ -13,9 +13,12 @@
   
   <script>
     $( document ).ready( function() {
-    	$('#newCompanySubmit').submit(function() {
+    	$('#newCompany').click(function() {
+    		var $modalForm = $('#companySubmit');
+    		$modalForm.attr('action', '${rc.getContextPath()}/company/new');
+    	});
+    	$('#newCompany').submit(function() {
     		var invalid = [];
-    		var $modalForm = $('#newCompanySubmit');
     		$.each($(this).children('.modal-body').children('input'), function(idx, dom) {
     			var $dom = $(dom);
     			if (!$dom.val()) {
@@ -26,7 +29,6 @@
     			alert(invalid.join(', ') + '입력해주세요!');
     			return false;
     		} else {
-    			$modalForm.attr('action', '${rc.getContextPath()}/new');
     			return true;
     		}
     	});
@@ -35,12 +37,12 @@
     		var companyId = $(this).data('company_id');
     		var $valueElement = $('#element_' + companyId);
     		var img = $valueElement.children('img')[0];
-    		var name = $valueElement.children('span#element_name_' + companyId);
-    		var description = $valueElement.children('span#element_description_' + companyId);
+    		var name = $valueElement.children('span#element_name_' + companyId)[0];
+    		var description = $valueElement.children('span#element_description_' + companyId)[0];
     		var $hiddenId = $('#modal_company_id');
-    		var $modalForm = $('#newCompanySubmit');
+    		var $modalForm = $('#companySubmit');
     		if (!$hiddenId.length) {
-    			$hiddenId = $('<input type="hidden" id="modal_company_id" val="' + companyId + '">');
+    			$hiddenId = $('<input type="hidden" id="modal_company_id" name="id" val="' + companyId + '">');
     			$('#modal_body').append($hiddenId);
     		}
     		$hiddenId.val(companyId);
@@ -48,7 +50,9 @@
     		$('#modal_company_image').val(img.alt !== 'no_image' ? img.src : null);
     		$('#modal_company_description').val(description.innerHTML);
     		
-    		$modalForm.attr('action', '${rc.getContextPath()}/modification');
+    		$modalForm.attr('action', '${rc.getContextPath()}/company/modification');
+    		console.log($modalForm);
+    		console.log($modalForm.attr('action'))
     	});
     	
     	$('.btn_remover').click(function() {
@@ -97,9 +101,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">News Company List
-                  <#if hasCompany??>
-                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Company</button>
-                  </#if>
+                <button id="newCompany" type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Company</button>
                 </h1>
             </div>
         </div>
@@ -129,7 +131,7 @@
                 <a id="element_${company.id}" href="${rc.getContextPath()}/recipe/${company.id}">
                     <img class="img-responsive" src="${img}" alt="${img_description}">
                     <span id="element_name_${company.id}">${company.name}</span>
-                    <span class="element_description_${company.id}">${company.description}</span>
+                    <span id="element_description_${company.id}">${company.description}</span>
                 </a>
               </div>
             </div>
@@ -148,7 +150,7 @@
 			      <div class="modal-header">
 			        <h4 class="modal-title">뉴스제공사</h4>
 			      </div>
-			      <form id="newCompanySubmit" enctype="application/json" action="${rc.getContextPath()}/company/new" method="post">
+			      <form id="companySubmit" method="post">
 				      <div id="modal_body" class="modal-body">
 				        
 				          <label for="modal_company_name">Name:</label>

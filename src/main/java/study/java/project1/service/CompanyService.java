@@ -35,4 +35,8 @@ public class CompanyService {
   public void deleteCompany(Integer companyId) {
     companyDao.delete(companyId);
   }
+  
+  public void modify(Company company) {
+    companyDao.save(company);
+  }
 }

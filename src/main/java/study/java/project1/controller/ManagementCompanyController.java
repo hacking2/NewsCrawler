@@ -34,27 +34,18 @@ public class ManagementCompanyController {
   @RequestMapping(path = "/new", method = RequestMethod.POST)
   public String newCompany(Company company, ModelMap model) {
     companyService.addCompany(company);
-    managementCompany(model);
-    return "company";
-  }
-  
-  @RequestMapping(path = "/new/list", method = RequestMethod.POST)
-  public String newCompanies(@RequestBody Collection<Company> companies, ModelMap model) {
-    companyService.addAllCompany(companies);
-    managementCompany(model);
-    return "company";
+    return "redirect:/company/list";
   }
   
   @RequestMapping(path = "/modification", method = RequestMethod.POST)
   public String updateCompany(Company company) {
-    System.out.println("modify");
-    return "company";
+    companyService.modify(company);
+    return "redirect:/company/list";
   }
   
   @RequestMapping(path = "/removal", method = RequestMethod.POST)
   public String removeCompany(int companyId, ModelMap model) {
     companyService.deleteCompany(companyId);
-    managementCompany(model);
-    return "company";
+    return "redirect:/company/list";
   }
 }
