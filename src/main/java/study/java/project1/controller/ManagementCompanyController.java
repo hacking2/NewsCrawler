@@ -32,7 +32,7 @@ public class ManagementCompanyController {
   }
   
   @RequestMapping(path = "/new", method = RequestMethod.POST)
-  public String newCompany(@RequestBody Company company, ModelMap model) {
+  public String newCompany(Company company, ModelMap model) {
     companyService.addCompany(company);
     managementCompany(model);
     return "company";

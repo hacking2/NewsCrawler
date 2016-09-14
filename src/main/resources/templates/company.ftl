@@ -13,7 +13,21 @@
   
   <script>
     $( document ).ready( function() {
-    
+    	$('#newCompanySubmit').submit(function() {
+    		var invalid = [];
+    		$.each($(this).children('.modal-body').children('input'), function(idx, dom) {
+    			var $dom = $(dom);
+    			if (!$dom.val()) {
+    			  invalid.push($dom.attr('name'));
+    			}
+    		});
+    		if (invalid.length) {
+    			alert(invalid.join(', ') + '를 입력해주세요!');
+    			return false;
+    		} else {
+    			return true;
+    		}
+    	});
     }) 
   </script>
 </head>
@@ -50,7 +64,9 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">News Company List
-                    <small></small>
+                  <#if hasCompany??>
+                    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Company</button>
+                  </#if>
                 </h1>
             </div>
         </div>
@@ -64,6 +80,8 @@
             <div class="col-md-3 portfolio-item">
                 <a href="${rc.getContextPath()}/recipe/${company.id}">
                     <img class="img-responsive" src="<#if company.image??>${company.image}<#else>none</#if>" alt="">
+                    <span>${company.name}</span>
+                    <span>${company.description}</span>
                 </a>
             </div>
         <#if company?index % 4 == 3 || company?is_last>
@@ -73,6 +91,33 @@
         <!-- /.row -->
         <hr>
 
+			<div id="myModal" class="modal fade" role="dialog">
+			  <div class="modal-dialog">
+			
+			    <!-- Modal content-->
+			    <div class="modal-content">
+			      <div class="modal-header">
+			        <h4 class="modal-title">새 뉴스 제공사</h4>
+			      </div>
+			      <form id="newCompanySubmit" enctype="application/json" action="${rc.getContextPath()}/company/new" method="post">
+				      <div class="modal-body">
+				        
+				          <label for="name">Name:</label>
+	                <input type="text" class="form-control" id="name" name="name">
+	                <label for="description">Description:</label>
+	                <input type="text" class="form-control" id="description" name="description">
+	                <label for="image">Image URL:</label>
+	                <input type="url" class="form-control" id="image" name="image">
+				      </div>
+				      <div class="modal-footer">
+				        <input type="submit" class="btn btn-success" value="Submit">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				      </div>
+			      </form>
+			    </div>
+			
+			  </div>
+			</div>
         <!-- Footer -->
         <footer>
             <div class="row">
