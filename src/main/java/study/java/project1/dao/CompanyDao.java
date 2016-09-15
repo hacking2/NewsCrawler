@@ -12,5 +12,5 @@ import study.java.project1.model.Company;
  *
  */
 public interface CompanyDao extends CrudRepository<Company, Integer> {
-
+  
 }

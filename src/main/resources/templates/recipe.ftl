@@ -6,70 +6,19 @@
   <link rel="stylesheet" type="text/css" href="${rc.getContextPath()}/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="${rc.getContextPath()}/css/4-col-portfolio.css">
   
-  <title>Management Company</title>
+  <title>Management Recipe</title>
  
   <script src="${rc.getContextPath()}/webjars/jquery/3.1.0/jquery.min.js"></script>
   <script src="${rc.getContextPath()}/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js"></script>
   
   <script>
     $( document ).ready( function() {
-    	$('#newCompany').click(function() {
-    		var $modalForm = $('#companySubmit');
-    		$modalForm.attr('action', '${rc.getContextPath()}/company/new');
-    	});
-    	$('#newCompany').submit(function() {
-    		var invalid = [];
-    		$.each($(this).children('.modal-body').children('input'), function(idx, dom) {
-    			var $dom = $(dom);
-    			if (!$dom.val()) {
-    			  invalid.push($dom.attr('name'));
-    			}
-    		});
-    		if (invalid.length) {
-    			alert(invalid.join(', ') + '입력해주세요!');
-    			return false;
-    		} else {
-    			return true;
-    		}
-    	});
     	
-    	$('.btn_modifier').click(function() {
-    		var companyId = $(this).data('company_id');
-    		var $valueElement = $('#element_' + companyId);
-    		var img = $valueElement.children('img')[0];
-    		var name = $valueElement.children('span#element_name_' + companyId)[0];
-    		var description = $valueElement.children('span#element_description_' + companyId)[0];
-    		var $hiddenId = $('#modal_company_id');
-    		var $modalForm = $('#companySubmit');
-    		if (!$hiddenId.length) {
-    			$hiddenId = $('<input type="hidden" id="modal_company_id" name="id" val="' + companyId + '">');
-    			$('#modal_body').append($hiddenId);
-    		}
-    		$hiddenId.val(companyId);
-    		$('#modal_company_name').val(name.innerHTML);
-    		$('#modal_company_image').val(img.alt !== 'no_image' ? img.src : null);
-    		$('#modal_company_description').val(description.innerHTML);
-    		
-    		$modalForm.attr('action', '${rc.getContextPath()}/company/modification');
-    		console.log($modalForm);
-    		console.log($modalForm.attr('action'))
-    	});
-    	
-    	$('.btn_remover').click(function() {
-    		$(this).parent('form').submit();
-    	});
-    	
-    	$('.modal_close').click(function() {
-    		$('#modal_company_name').val('');
-        $('#modal_company_image').val('');
-        $('#modal_company_description').val('');
-        $('#modal_company_id').remove();
-    	});
     }) 
   </script>
 </head>
 <body>
-  <#assign hasCompany = companies?size gt 0>
+  <#assign hasRecipe = recipes?size gt 0>
 <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -106,40 +55,6 @@
             </div>
         </div>
         <!-- /.row -->
-
-        <!-- Projects Row -->
-      <#list companies as company>
-        <#if company?index % 4 == 0>
-        <div class="row">
-        </#if>
-            <div class="col-md-3 portfolio-item">
-              <div class="element-control-area">
-                <a data-company_id="${company.id}" class="btn_modifier" href="#" data-toggle="modal" data-target="#myModal">수정</a>
-                <form action="${rc.getContextPath()}/company/removal" method="post">
-                  <a class="btn_remover" href="#">삭제</a>
-                  <input type="hidden" value="${company.id}" name="companyId">
-                </form>
-              </div>
-              <div class="element-data-area">
-                <#if company.image??>
-                  <#assign img = company.image>
-                  <#assign img_description = company.name>
-                <#else>
-                  <#assign img = rc.getContextPath() + "/image/default.jpg">
-                  <#assign img_description = "no_image">
-                </#if>
-                <a id="element_${company.id}" href="${rc.getContextPath()}/recipe/list/${company.id}">
-                    <img class="img-responsive" src="${img}" alt="${img_description}">
-                    <span id="element_name_${company.id}">${company.name}</span>
-                    <span id="element_description_${company.id}">${company.description}</span>
-                </a>
-              </div>
-            </div>
-        <#if company?index % 4 == 3 || company?is_last>
-        </div>
-        </#if>
-      </#list>
-        <!-- /.row -->
         <hr>
 
 			<div id="myModal" class="modal fade" role="dialog">
@@ -148,7 +63,7 @@
 			    <!-- Modal content-->
 			    <div class="modal-content">
 			      <div class="modal-header">
-			        <h4 class="modal-title">뉴스제공사</h4>
+			        <h4 class="modal-title">레시피</h4>
 			      </div>
 			      <form id="companySubmit" method="post">
 				      <div id="modal_body" class="modal-body">
