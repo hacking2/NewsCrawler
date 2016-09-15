@@ -128,7 +128,7 @@
                   <#assign img = rc.getContextPath() + "/image/default.jpg">
                   <#assign img_description = "no_image">
                 </#if>
-                <a id="element_${company.id}" href="${rc.getContextPath()}/recipe/${company.id}">
+                <a id="element_${company.id}" href="${rc.getContextPath()}/recipe/list/${company.id}">
                     <img class="img-responsive" src="${img}" alt="${img_description}">
                     <span id="element_name_${company.id}">${company.name}</span>
                     <span id="element_description_${company.id}">${company.description}</span>
