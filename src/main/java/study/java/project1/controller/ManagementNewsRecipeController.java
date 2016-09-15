@@ -9,9 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import study.java.project1.dao.CrawlRecipeDao;
 import study.java.project1.model.CrawlRecipe;
 import study.java.project1.service.RecipeService;
 
@@ -27,22 +25,26 @@ public class ManagementNewsRecipeController {
   
   @RequestMapping(path = "/list/{companyId}", method = RequestMethod.GET)
   public String managementRecipe(@PathVariable int companyId, ModelMap model) {
+    model.addAttribute("companyId", companyId);
     model.addAttribute("recipes", recipeService.receipes(companyId));
     return "recipe";
   }
   
-  @RequestMapping(path = "", method = RequestMethod.POST)
-  public @ResponseBody CrawlRecipe newRecipe(CrawlRecipe company) {
-    return null;
+  @RequestMapping(path = "/new", method = RequestMethod.POST)
+  public String newRecipe(CrawlRecipe recipe, int companyId) {
+    recipeService.newRecipe(recipe, companyId);
+    return "redirect:/recipe/list/" + companyId;
   }
   
-  @RequestMapping(path = "", method = RequestMethod.PUT)
-  public @ResponseBody CrawlRecipe updateRecipe(CrawlRecipe recipe) {
-    return null;
+  @RequestMapping(path = "/update", method = RequestMethod.POST)
+  public String updateRecipe(CrawlRecipe recipe, int companyId) {
+    recipeService.updateRecipe(recipe, companyId);
+    return "redirect:/recipe/list/" + companyId;
   }
   
-  @RequestMapping(path = "", method = RequestMethod.DELETE)
-  public @ResponseBody boolean removeRecipe(CrawlRecipe recipe) {
-    return false;
+  @RequestMapping(path = "/removal", method = RequestMethod.POST)
+  public String removeRecipe(int recipeId, int companyId) {
+    recipeService.removeRecipe(recipeId);
+    return "redirect:/recipe/list/" + companyId;
   }
 }

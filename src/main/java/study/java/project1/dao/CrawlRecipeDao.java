@@ -14,6 +14,6 @@ import study.java.project1.model.CrawlRecipe;
 /**
  * @author hyeon
  */
-public interface CrawlRecipeDao extends CrudRepository<CrawlRecipe, Long> {
-  Collection<CrawlRecipe> findByCompany_Id(int id);
+public interface CrawlRecipeDao extends CrudRepository<CrawlRecipe, Integer> {
+  Collection<CrawlRecipe> findByCompany_Id(int id); //Spring data naming rule에 따라 부득이하게 네이밍 컨벤션 위배
 }
