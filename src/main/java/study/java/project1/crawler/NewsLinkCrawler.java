@@ -7,6 +7,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import study.java.project1.html.AnchorTag;
 import study.java.project1.html.TagElement;
@@ -16,6 +17,7 @@ import study.java.project1.model.CrawlRecipe;
  * @author hyeon
  *
  */
+@Component
 public class NewsLinkCrawler implements NewsCrawler<List<TagElement>> {
   public static final int DEFAULT_TIMEOUT_MILLIS = 3000;
   

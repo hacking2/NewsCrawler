@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Component;
 
 import study.java.project1.byproduct.RawNews;
 import study.java.project1.model.CrawlRecipe;
@@ -18,6 +19,7 @@ import study.java.project1.model.CrawlRecipe.IdSpot;
  * @author hyeon
  *
  */
+@Component
 public class NewsContentCrawler implements NewsCrawler<RawNews> {
   @Override
   public RawNews parse(CrawlerContext context) throws Exception {

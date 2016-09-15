@@ -21,6 +21,22 @@
     	$('.btn_remover').click(function() {
     		$(this).parent('form').submit();
     	});
+    	
+    	$('.btn_test').click(function() {
+    		var recipeId = $(this).data('recipe_id'),
+    		  formData = $('#recipeForm' + recipeId).serialize();
+    		$.ajax({
+    			'method' : 'get',
+    			'data' : formData,
+    			'url' : '${rc.getContextPath()}/preview/crawl',
+    			'success' : function(response) {
+    				console.log(response);
+    			},
+    			'error' : function() {
+    				console.log('error');
+    			}
+    		});
+    	});
     }) 
   </script>
 </head>
@@ -68,6 +84,7 @@
         </#if>
             <div class="col-md-3 portfolio-item">
               <div class="element-control-area">
+                <a data-recipe_id="${recipe.recipeId}" class="btn_test" href="#">크롤테스트</a>
                 <a data-recipe_id="${recipe.recipeId}" class="btn_modifier" href="#">수정</a>
                 <form action="${rc.getContextPath()}/recipe/removal" method="post">
                   <a class="btn_remover" href="#">삭제</a>

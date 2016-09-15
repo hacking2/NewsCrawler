@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import study.java.project1.byproduct.RawNews;
 import study.java.project1.html.TagElement;
@@ -16,12 +17,13 @@ import study.java.project1.html.TagElement;
  * 이 링크를 다시 한 번 따라가서 실제 뉴스 제목, 내용을 긁어온다.(contentsExtractor) 
  * @author hyeon
  */
+@Component
 public class NewsExtractorChain implements NewsCrawler<List<RawNews>> {
   @Autowired
-  private NewsCrawler<List<TagElement>> contentsListExtractor;
+  private NewsLinkCrawler contentsListExtractor;
   
   @Autowired
-  private NewsCrawler<RawNews> contentsExtractor;
+  private NewsContentCrawler contentsExtractor;
   
   @Override
   public List<RawNews> parse(CrawlerContext ctx) throws Exception {
