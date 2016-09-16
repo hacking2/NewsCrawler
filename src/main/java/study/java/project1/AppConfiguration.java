@@ -1,7 +1,12 @@
 package study.java.project1;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 
 @Configuration
 @PropertySource(value = "classpath:properties/version.properties", encoding = "UTF-8")
