@@ -3,8 +3,6 @@
  */
 package study.java.project1.normalizer;
 
-import javax.annotation.PostConstruct;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
@@ -14,8 +12,6 @@ import org.jsoup.parser.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import com.cloudinary.Cloudinary;
 
 import study.java.project1.byproduct.RawNews;
 import study.java.project1.model.News;

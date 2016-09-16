@@ -16,7 +16,6 @@ import study.java.project1.dao.CrawlRecipeDao;
 import study.java.project1.dao.NewsDao;
 import study.java.project1.model.CrawlRecipe;
 import study.java.project1.model.News;
-import study.java.project1.normalizer.NewsNormalizer;
 import study.java.project1.normalizer.NewsNormalizerChain;
 
 /**

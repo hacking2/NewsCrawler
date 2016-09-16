@@ -4,11 +4,9 @@
 package study.java.project1.dao;
 
 import java.util.Collection;
-import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import study.java.project1.byproduct.RawNews;
 import study.java.project1.model.CrawlRecipe;
 
 /**
